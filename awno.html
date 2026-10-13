@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AWNO</title>
+<style>
+:root{--bg:#12091f;--panel:#1d1233;--line:#3a2461;--violet:#7b3fe4;--soft:#c9a8ff;--text:#f4eefc;--mute:#a597bd}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;line-height:1.7}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 28px}
+.brand{font-size:96px;font-weight:700;letter-spacing:.12em;margin:0;color:var(--text);text-shadow:0 0 38px rgba(123,63,228,.75)}
+.tag{color:var(--mute);font-size:22px;margin:4px 0 36px}
+.nav{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin:-8px}
+.btn{display:block;margin:8px;padding:20px 34px;font-size:26px;font-family:inherit;color:var(--text);background:var(--panel);border:3px solid var(--line);border-radius:14px;text-decoration:none;cursor:pointer}
+.btn:focus,.btn:hover{outline:none;border-color:var(--soft);background:var(--violet);color:#fff}
+.btn.main{background:var(--violet);border-color:var(--violet)}
+.panel{display:none;margin-top:40px;padding:28px;background:var(--panel);border:2px solid var(--line);border-radius:18px}
+.panel.on{display:block}
+.panel h2{margin:0 0 6px;font-size:36px}
+.panel p{margin:0 0 20px;color:var(--mute);font-size:21px}
+.list{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin:-8px}
+.empty{color:var(--mute);font-size:21px}
+.warn{margin-top:20px;padding:14px 18px;border-right:6px solid var(--violet);background:rgba(123,63,228,.14);font-size:20px}
+@media (max-width:640px){.brand{font-size:60px}.btn{font-size:22px;padding:16px 22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="brand">AWNO</h1>
+  <p class="tag">مودات PS4 في مكان واحد</p>
+
+  <div class="nav" id="nav">
+    <a class="btn" href="#gta5" data-p="gta5">GTA V</a>
+    <a class="btn" href="#rdr2" data-p="rdr2">Red Dead Redemption 2</a>
+    <a class="btn main" href="#goldhen" data-p="goldhen">GoldHEN</a>
+  </div>
+
+  <div class="panel" id="gta5">
+    <h2>GTA V</h2>
+    <p>مودات طور القصة</p>
+    <div class="list" id="list-gta5"></div>
+  </div>
+
+  <div class="panel" id="rdr2">
+    <h2>Red Dead Redemption 2</h2>
+    <p>مودات طور القصة</p>
+    <div class="list" id="list-rdr2"></div>
+  </div>
+
+  <div class="panel" id="goldhen">
+    <h2>GoldHEN</h2>
+    <p>التفعيل يتم من صفحة الاستغلال الأصلية، ولم يتغير فيها شيء.</p>
+    <div class="list">
+      <a class="btn main" id="launch" href="jb.html">فتح صفحة التفعيل</a>
+    </div>
+    <div class="warn">الإصدار 13.50: لم يُختبر التفعيل من هذه الصفحة بعد. جرّبه على جهازك قبل نشره للآخرين.</div>
+  </div>
+</div>
+
+<script>
+/* غيّر هذه القيم فقط. ملفات الاستغلال لا تُعدّل. */
+var LAUNCH_PAGE = "jb.html";
+var MODS = {
+  gta5: [
+    /* {name: "اسم المود", url: "رابط التحميل"} */
+  ],
+  rdr2: [
+  ]
+};
+
+(function () {
+  var panels = ["gta5", "rdr2", "goldhen"];
+  document.getElementById("launch").setAttribute("href", LAUNCH_PAGE);
+
+  function fill(key) {
+    var box = document.getElementById("list-" + key);
+    var items = MODS[key] || [];
+    box.innerHTML = "";
+    if (!items.length) {
+      var e = document.createElement("div");
+      e.className = "empty";
+      e.textContent = "لا توجد مودات هنا بعد.";
+      box.appendChild(e);
+      return;
+    }
+    for (var i = 0; i < items.length; i++) {
+      var a = document.createElement("a");
+      a.className = "btn";
+      a.href = items[i].url;
+      a.textContent = items[i].name;
+      box.appendChild(a);
+    }
+  }
+
+  function show(id) {
+    for (var i = 0; i < panels.length; i++) {
+      document.getElementById(panels[i]).className = "panel" + (panels[i] === id ? " on" : "");
+    }
+    var first = document.getElementById(id).getElementsByTagName("a")[0];
+    if (first) { first.focus(); }
+  }
+
+  fill("gta5"); fill("rdr2");
+
+  var links = document.getElementById("nav").getElementsByTagName("a");
+  for (var j = 0; j < links.length; j++) {
+    links[j].onclick = function (ev) {
+      ev.preventDefault();
+      show(this.getAttribute("data-p"));
+      return false;
+    };
+  }
+})();
+</script>
+</body>
+</html>
